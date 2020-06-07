@@ -1,22 +1,44 @@
-import React from "react"
-import { Link } from "gatsby"
+import React, { useState } from "react"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
+import Form from "../components/form"
 import SEO from "../components/seo"
+import "bootstrap/dist/css/bootstrap.min.css"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link> <br />
-    <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
-  </Layout>
-)
+import Container from "react-bootstrap/Container"
+import Button from "react-bootstrap/Button"
+import Row from "react-bootstrap/Row"
+import Col from "react-bootstrap/Col"
+
+import PlayListPlayer from "../components/playlistPlayer"
+import TimerPanel from "./timerPanel"
+
+const IndexPage = () => {
+  const [isTimerCreated, setIsTimerCreated] = useState(false)
+  return (
+    <Layout>
+      <SEO title="Home" />
+      <Container>
+        <Row>
+          <Col xs={12} md={6}>
+            {!isTimerCreated && (
+              <Form handleDisplayTimerPanel={() => setIsTimerCreated(true)} />
+            )}
+            {isTimerCreated && (
+              <div>
+                <Button style={{ marginBottom: "8px" }}>Start Timer</Button>
+                <PlayListPlayer playlistUrl="https://open.spotify.com/embed/playlist/37i9dQZF1DXbeUHEkt5uXG" />
+              </div>
+            )}
+          </Col>
+
+          <Col xs={12} md={6}>
+            {isTimerCreated && <TimerPanel />}
+          </Col>
+        </Row>
+      </Container>
+    </Layout>
+  )
+}
 
 export default IndexPage
