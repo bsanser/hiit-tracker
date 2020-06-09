@@ -18,7 +18,17 @@ const IndexPage = () => {
   const [formData, setFormData] = useState({})
   const [playlistUrl, setPlaylistUrl] = useState(null)
 
-  return <TimerPanel formData={formData} />
+  const [exerciseStructure, setExerciseStructure] = useState([])
+
+  const handleFormSubmit = formData => {
+    setFormData(formData)
+    setIsTimerCreated(true)
+    setExerciseStructure([
+      { name: "warmup", value: 2 },
+      { name: "exercise1", value: 3 },
+      { name: "exercise2", value: 4 },
+    ])
+  }
 
   return (
     <Layout>
@@ -26,12 +36,7 @@ const IndexPage = () => {
       <Container>
         <Row>
           <Col xs={12} md={6}>
-            {!isTimerCreated && (
-              <Form
-                handleDisplayTimerPanel={() => setIsTimerCreated(true)}
-                handleFormData={setFormData}
-              />
-            )}
+            {!isTimerCreated && <Form onSubmit={handleFormSubmit} />}
             {isTimerCreated && (
               <div>
                 {/* https://open.spotify.com/embed/playlist/37i9dQZF1DXbeUHEkt5uXG */}
@@ -41,7 +46,9 @@ const IndexPage = () => {
           </Col>
 
           <Col xs={12} md={12}>
-            {isTimerCreated && <TimerPanel formData={formData} />}
+            {isTimerCreated && (
+              <TimerPanel exerciseStructure={exerciseStructure} />
+            )}
           </Col>
         </Row>
       </Container>

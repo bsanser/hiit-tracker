@@ -1,50 +1,30 @@
 import React, { useState, useEffect, useRef } from "react"
 import Timer from "./../components/timer"
 import Button from "react-bootstrap/Button"
+import { useInterval } from "../hooks/useInterval"
 
-const TimerPanel = ({ formData }) => {
+const TimerPanel = ({ exerciseStructure }) => {
   const [index, setIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(0)
-  const indexRef = useRef()
-  const timeLeftRef = useRef()
-  const exerciseStructure = [
-    { name: "warmup", value: 2 },
-    { name: "exercise1", value: 3 },
-    { name: "exercise2", value: 4 },
-  ]
+  const [delay, setDelay] = useState(null)
 
   useEffect(() => {
-    indexRef.current = index
+    setTimeLeft(exerciseStructure[index].value)
   }, [index])
 
-  useEffect(() => {
-    timeLeftRef.current = timeLeft
-  }, [timeLeft])
-
-  useEffect(() => {
-    setTimeLeft(exerciseStructure[index].value - 1)
-  }, [index])
-
-  const startTimer = () => {
-    let interval = setInterval(() => {
-      if (timeLeftRef.current <= 0) {
-        console.log("clearInterval", indexRef.current)
-        clearInterval(interval)
-        if (indexRef.current < exerciseStructure.length - 1) {
-          console.log("next", indexRef.current)
-          setIndex(indexRef.current + 1)
-          startTimer()
-        } else {
-          return
-        }
+  useInterval(() => {
+    if (timeLeft <= 0) {
+      if (index >= exerciseStructure.length - 1) {
+        setDelay(null)
+        return
       }
-      setTimeLeft(timeLeft => {
-        console.log("setTimeLeft")
+      setIndex(index + 1)
+    }
+    setTimeLeft(timeLeft - 1)
+  }, delay)
 
-        return timeLeft - 1
-      })
-    }, 1000)
-    return () => clearInterval(interval)
+  const handleStartButtonClick = () => {
+    setDelay(1000)
   }
 
   return (
@@ -53,7 +33,7 @@ const TimerPanel = ({ formData }) => {
         Current exercise: {exerciseStructure[index].name}
       </div>
       <Timer timeLeft={timeLeft} />
-      <Button onClick={startTimer}>Start timer</Button>
+      <Button onClick={handleStartButtonClick}>Start timer</Button>
     </div>
   )
 }
