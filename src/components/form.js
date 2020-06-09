@@ -22,6 +22,7 @@ class TrainingForm extends Component {
 
   handleSubmit = event => {
     const { formData } = this.state
+    const { handleFormData, handleDisplayTimerPanel } = this.props
     event.preventDefault()
     const form = event.currentTarget
     if (!form.checkValidity()) {
@@ -30,8 +31,8 @@ class TrainingForm extends Component {
         console.log("pongo validated a true")
       )
     } else {
-      this.props.handleDisplayTimerPanel()
-      console.log(formData)
+      handleFormData(formData)
+      handleDisplayTimerPanel()
     }
   }
 

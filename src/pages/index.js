@@ -15,6 +15,7 @@ import TimerPanel from "./timerPanel"
 
 const IndexPage = () => {
   const [isTimerCreated, setIsTimerCreated] = useState(false)
+  const [formData, setFormData] = useState({})
   return (
     <Layout>
       <SEO title="Home" />
@@ -22,18 +23,21 @@ const IndexPage = () => {
         <Row>
           <Col xs={12} md={6}>
             {!isTimerCreated && (
-              <Form handleDisplayTimerPanel={() => setIsTimerCreated(true)} />
+              <Form
+                handleDisplayTimerPanel={() => setIsTimerCreated(true)}
+                handleFormData={setFormData}
+              />
             )}
             {isTimerCreated && (
               <div>
                 <Button style={{ marginBottom: "8px" }}>Start Timer</Button>
-                <PlayListPlayer playlistUrl="https://open.spotify.com/embed/playlist/37i9dQZF1DXbeUHEkt5uXG" />
+                {/* <PlayListPlayer playlistUrl="https://open.spotify.com/embed/playlist/37i9dQZF1DXbeUHEkt5uXG" /> */}
               </div>
             )}
           </Col>
 
           <Col xs={12} md={6}>
-            {isTimerCreated && <TimerPanel />}
+            {isTimerCreated && <TimerPanel formData={formData} />}
           </Col>
         </Row>
       </Container>
