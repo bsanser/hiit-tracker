@@ -1,27 +1,48 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Timer from "./../components/timer"
 import Button from "react-bootstrap/Button"
 
 const TimerPanel = ({ formData }) => {
-  let [index, setIndex] = useState(0)
-  let [timeLeft, setTimeLeft] = useState(0)
-  const exerciseStructure = [{ warmup: 2 }, { exercise1: 10 }, { exercise2: 5 }]
+  const [index, setIndex] = useState(0)
+  const [timeLeft, setTimeLeft] = useState(0)
+  const indexRef = useRef()
+  const timeLeftRef = useRef()
+  const exerciseStructure = [
+    { name: "warmup", value: 2 },
+    { name: "exercise1", value: 3 },
+    { name: "exercise2", value: 4 },
+  ]
 
   useEffect(() => {
-    setTimeLeft(Object.values(exerciseStructure[index])[0])
+    indexRef.current = index
   }, [index])
 
-  const handleChangeIndex = () => {
-    setIndex(index++)
-  }
+  useEffect(() => {
+    timeLeftRef.current = timeLeft
+  }, [timeLeft])
+
+  useEffect(() => {
+    setTimeLeft(exerciseStructure[index].value - 1)
+  }, [index])
 
   const startTimer = () => {
     let interval = setInterval(() => {
-      setTimeLeft(timeLeft--)
-      if (timeLeft < 0) {
-        handleChangeIndex()
+      if (timeLeftRef.current <= 0) {
+        console.log("clearInterval", indexRef.current)
         clearInterval(interval)
+        if (indexRef.current < exerciseStructure.length - 1) {
+          console.log("next", indexRef.current)
+          setIndex(indexRef.current + 1)
+          startTimer()
+        } else {
+          return
+        }
       }
+      setTimeLeft(timeLeft => {
+        console.log("setTimeLeft")
+
+        return timeLeft - 1
+      })
     }, 1000)
     return () => clearInterval(interval)
   }
@@ -29,7 +50,7 @@ const TimerPanel = ({ formData }) => {
   return (
     <div>
       <div style={{ fontSize: "40px" }}>
-        Current exercise: {Object.keys(exerciseStructure[index])[0]}{" "}
+        Current exercise: {exerciseStructure[index].name}
       </div>
       <Timer timeLeft={timeLeft} />
       <Button onClick={startTimer}>Start timer</Button>

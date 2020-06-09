@@ -1,0 +1,11 @@
+@media (min-width: 576px) {
+  .timer {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 768px) {
+  .timer {
+    font-size: 150px;
+  }
+}
