@@ -8,6 +8,7 @@ import InputGroup from "react-bootstrap/InputGroup"
 class TrainingForm extends Component {
   state = {
     formData: {
+      nameOfTraining: "",
       numberOfSeries: "",
       numberOfExercises: "",
       nameOfExercises: [],
@@ -23,15 +24,15 @@ class TrainingForm extends Component {
   handleSubmit = event => {
     const { formData } = this.state
     const { onSubmit } = this.props
+    console.log(formData)
     event.preventDefault()
     const form = event.currentTarget
     if (!form.checkValidity()) {
       event.stopPropagation()
-      this.setState({ validated: true }, () =>
-        console.log("pongo validated a true")
-      )
+      this.setState({ validated: true })
     } else {
       onSubmit(formData)
+      localStorage.setItem(`training-${formData.nameOfTraining}`, JSON.stringify(formData))
     }
   }
 
@@ -72,6 +73,7 @@ class TrainingForm extends Component {
   render() {
     const {
       formData: {
+        nameOfTraining,
         numberOfSeries,
         numberOfExercises,
         nameOfExercises,
@@ -93,6 +95,20 @@ class TrainingForm extends Component {
         >
           <Row>
             <Col xs={6}>
+              <Form.Group controlId="nameOfTraining">
+                <Form.Label>Name of the training</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="Ex. HIIT core"
+                  value={nameOfTraining}
+                  name="nameOfTraining"
+                  onChange={this.handleChange}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please enter a name for the training
+                </Form.Control.Feedback>
+              </Form.Group>
               <Form.Group controlId="numberOfSeries">
                 <Form.Label>Number of series</Form.Label>
                 <Form.Control

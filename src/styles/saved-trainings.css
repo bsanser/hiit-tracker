@@ -1,0 +1,8 @@
+.card .card-header {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.row.buttons-row {
+  justify-content: space-around;
+}
