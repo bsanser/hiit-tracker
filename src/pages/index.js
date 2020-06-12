@@ -38,7 +38,6 @@ const IndexPage = () => {
 
   const handleFormSubmit = formData => {
     setFormData(formData)
-    
     setIsTimerCreated(true)
     exerciseTimer.setExerciseStructure(generateExerciseStructure(formData))
   }
@@ -71,7 +70,7 @@ const IndexPage = () => {
       <SEO title="Home" />
       <Container>
         <Row>
-          <Col xs={12} md={6}>
+          <Col xs={12} md={8}>
             {!isTimerCreated && <Form onSubmit={handleFormSubmit} />}
 
             {isTimerCreated && (
@@ -82,7 +81,7 @@ const IndexPage = () => {
             )}
           </Col>
 
-          <Col xs={12} md={6}>
+          <Col xs={12} md={8}>
             {savedTrainings.length > 0 && !isTimerCreated && (
               <SavedTrainings
                 savedTrainings={savedTrainings}

@@ -32,7 +32,10 @@ class TrainingForm extends Component {
       this.setState({ validated: true })
     } else {
       onSubmit(formData)
-      localStorage.setItem(`training-${formData.nameOfTraining}`, JSON.stringify(formData))
+      localStorage.setItem(
+        `training-${formData.nameOfTraining}`,
+        JSON.stringify(formData)
+      )
     }
   }
 
@@ -94,7 +97,7 @@ class TrainingForm extends Component {
           onSubmit={this.handleSubmit}
         >
           <Row>
-            <Col xs={6}>
+            <Col xs={4}>
               <Form.Group controlId="nameOfTraining">
                 <Form.Label>Name of the training</Form.Label>
                 <Form.Control
@@ -137,6 +140,8 @@ class TrainingForm extends Component {
                   Please enter the number of seconds
                 </Form.Control.Feedback>
               </Form.Group>
+            </Col>
+            <Col xs={4}>
               <Form.Group controlId="restBetweenExercises">
                 <Form.Label>Rest between exercises (secs)</Form.Label>
                 <Form.Control
@@ -176,19 +181,8 @@ class TrainingForm extends Component {
                 />
                 <Form.Text className="text-muted">Optional</Form.Text>
               </Form.Group>
-              <Form.Group controlId="cooldownPeriod">
-                <Form.Label>Cooldown (secs)</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Ex. 120"
-                  value={cooldownPeriod}
-                  name="cooldownPeriod"
-                  onChange={this.handleChange}
-                />
-                <Form.Text className="text-muted">Optional</Form.Text>
-              </Form.Group>
             </Col>
-            <Col xs={6}>
+            <Col xs={4}>
               <Form.Group controlId="numberOfExercises">
                 <Form.Label>Number of exercises</Form.Label>
                 <Form.Control
@@ -227,6 +221,17 @@ class TrainingForm extends Component {
                   ))}
                 </Form.Group>
               )}
+              <Form.Group controlId="cooldownPeriod">
+                <Form.Label>Cooldown (secs)</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Ex. 120"
+                  value={cooldownPeriod}
+                  name="cooldownPeriod"
+                  onChange={this.handleChange}
+                />
+                <Form.Text className="text-muted">Optional</Form.Text>
+              </Form.Group>
             </Col>
           </Row>
 
